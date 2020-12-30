@@ -7,9 +7,12 @@ app.use(express.json());
 app.post("/addNames", (req, res) => {
   const name = req.body["name"];
   const age = req.body["age"];
-  var time_to_live = isNaN(parseInt(req.body["time_to_live"]))
-    ? -1
-    : parseInt(req.body["time_to_live"]);
+  let time_to_live_parsed = parseInt(req.body["time_to_live"]);
+  if (isNaN(time_to_live_parsed)) {
+    time_to_live = -1;
+  } else {
+    time_to_live = time_to_live_parsed;
+  }
   if (name === undefined || age === undefined) {
     return;
   }
