@@ -28,7 +28,8 @@ app.post("/addNames", (req, res) => {
       };
       json = JSON.stringify(obj);
       fs.writeFile("name.json", json, "utf8", (err) => {
-        if (err) res.send("Failed!");
+        if (err)
+          res.send("Failed! Couldn't read the JSON file or it does not exists");
         else
           res.send(
             `Names added to NOSQL DB Successfully. The values added are as follows ${name} and ${age}`
@@ -49,7 +50,10 @@ app.post("/addNames", (req, res) => {
         };
         json = JSON.stringify(obj);
         fs.writeFile("name.json", json, "utf8", (err) => {
-          if (err) res.send("Failed!");
+          if (err)
+            res.send(
+              "Failed! Couldn't read the JSON file or it does not exists"
+            );
           else
             res.send(
               `Names added to NOSQL DB Successfully. The values added are as follows ${name} and ${age}`
@@ -102,9 +106,38 @@ app.post("/removeName", (req, res) => {
   });
 });
 
-app.use(function (error, req, res, next) {
+app.post("/getNames", (req, res) => {
+  const name = req.body["name"];
+  if (name === undefined) {
+    res.send("Error: Could not parse GET data");
+    return;
+  }
+  fs.readFile("name.json", "utf8", (err, data) => {
+    if (err)
+      res.send("Failed! Couldn't read the JSON file or it does not exists");
+    else {
+      obj = JSON.parse(data);
+      const TimeRightNow = Date.now();
+      if (
+        name in obj &&
+        (TimeRightNow - obj[name]["OriginalTime"] <=
+          obj[name]["time_to_live"] * 1000 ||
+          obj[name]["time_to_live"] == -1)
+      )
+        res.send(obj[name]);
+      else
+        res.send(
+          `Couldn't retrieve ${name} this could occur either of the two reasons maybe TTL would have been expired or the name doesn't exists in JSON database`
+        );
+    }
+  });
+});
+
+app.use((error, req, res, next) => {
   if (error instanceof SyntaxError) {
-    res.send("Error: Bad JSON format");
+    res.send(
+      "Please check for your JSON format. It's invalid. It should have {} braces"
+    );
   } else {
     next();
   }
@@ -115,5 +148,5 @@ app.get("/ping", (req, res) => {
 });
 
 app.listen(port, () => {
-  console.log(`App listening at http://localhost:${port}`);
+  console.log(`App listening on ${port}`);
 });
