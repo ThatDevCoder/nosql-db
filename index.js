@@ -9,14 +9,23 @@ app.use(cors());
 
 app.post("/addNames", (req, res) => {
   const name = req.body["name"];
-  const age = parseInt(req.body["age"]);
+  //   console.log(`The length of name/key is ${name.length}`);
+  const address = req.body["address"];
+  //   console.log(`The length of the value is ${address.toString.length}`);
   let time_to_live_parsed = parseInt(req.body["time_to_live"]);
+  if (name.length > 32 || address.length > 16000) {
+    res.send(
+      "Character more than limit name should be not more than 32 chars and value should not be more than 16000 chars or 16KB"
+    );
+    res.send("Couldn't add to DB");
+    return;
+  }
   if (isNaN(time_to_live_parsed)) {
     time_to_live = -1;
   } else {
     time_to_live = time_to_live_parsed;
   }
-  if (name === undefined || age === undefined) {
+  if (name === undefined || address === undefined) {
     return;
   }
   fs.readFile("name.json", "utf8", (err, data) => {
@@ -24,7 +33,7 @@ app.post("/addNames", (req, res) => {
     if (err) {
       obj = {
         [name]: {
-          age: age,
+          address: address,
           OriginalTime: TimeRightNow,
           time_to_live: time_to_live,
         },
@@ -35,7 +44,7 @@ app.post("/addNames", (req, res) => {
           res.send("Failed! Couldn't read the JSON file or it does not exists");
         else
           res.send(
-            `Names added to NOSQL DB Successfully. The values added are as follows ${name} and ${age}`
+            `Names added to NOSQL DB Successfully. The values added are as follows ${name} and ${address}`
           );
       });
     } else {
@@ -47,7 +56,7 @@ app.post("/addNames", (req, res) => {
           obj[name]["time_to_live"] != -1)
       ) {
         obj[name] = {
-          age: age,
+          address: address,
           OriginalTime: TimeRightNow,
           time_to_live: time_to_live,
         };
@@ -59,7 +68,7 @@ app.post("/addNames", (req, res) => {
             );
           else
             res.send(
-              `Names added to NOSQL DB Successfully. The values added are as follows ${name} and ${age}`
+              `Names added to NOSQL DB Successfully. The values added are as follows ${name} and ${address}`
             );
         });
       } else
