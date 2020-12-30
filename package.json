@@ -1,0 +1,24 @@
+{
+  "name": "nosql",
+  "version": "1.0.0",
+  "description": "Implemening NO-SQL CRD operations",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThatDevCoder/nosql-kv-db.git"
+  },
+  "keywords": [
+    "nosql",
+    "in-memory",
+    "CRD"
+  ],
+  "author": "Devyash Bordia",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ThatDevCoder/nosql-kv-db/issues"
+  },
+  "homepage": "https://github.com/ThatDevCoder/nosql-kv-db#readme"
+}
