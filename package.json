@@ -4,7 +4,7 @@
   "description": "Implemening NO-SQL CRD operations",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -20,5 +20,11 @@
   "bugs": {
     "url": "https://github.com/ThatDevCoder/nosql-kv-db/issues"
   },
-  "homepage": "https://github.com/ThatDevCoder/nosql-kv-db#readme"
+  "homepage": "https://github.com/ThatDevCoder/nosql-kv-db#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
+  }
 }
