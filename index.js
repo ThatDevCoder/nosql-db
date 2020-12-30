@@ -1,6 +1,7 @@
 const express = require("express");
 const fs = require("fs");
 const cors = require("cors");
+const filesize = require("filesize");
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -26,6 +27,15 @@ app.post("/addNames", (req, res) => {
     time_to_live = time_to_live_parsed;
   }
   if (name === undefined || address === undefined) {
+    return;
+  }
+  let sizeOfJson = fs.statSync("name.json");
+  let size = sizeOfJson.size / (1024 * 1024);
+  // console.log(size);
+  if (size > 1024) {
+    res.send(
+      "The DB is exceeding the size limit of 1 GB, couldn't add more data to it"
+    );
     return;
   }
   fs.readFile("name.json", "utf8", (err, data) => {
