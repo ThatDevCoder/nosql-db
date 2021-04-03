@@ -2,10 +2,9 @@
 
 - I have deployed this app on Heroku
 
-  > https://nosqlcrddevyash.herokuapp.com/
+ > https://nosqlcrddevyash.herokuapp.com/
 
 ## How to Install Locally
-
 1. Clone the Repository
 
    > git clone https://github.com/ThatDevCoder/nosql-kv-db.git
